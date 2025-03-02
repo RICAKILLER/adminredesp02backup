@@ -1,0 +1,123 @@
+Building configuration...
+
+Current configuration : 1352 bytes
+!
+! Last configuration change at 14:47:23 UTC Sun Mar 2 2025
+upgrade fpd auto
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname rtr3
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+ip domain name router3.com
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+username admin privilege 15 secret 5 $1$Bxfy$qcIbca/zfoU/jDna8dpeO.
+!
+redundancy
+!
+!
+ip ssh version 2
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 3.0.0.1 255.0.0.0
+!
+interface Loopback55
+ no ip address
+!
+interface Loopback990
+ no ip address
+!
+interface FastEthernet0/0
+ no ip address
+ shutdown
+ duplex half
+!
+interface Ethernet1/0
+ ip address 10.0.5.10 255.255.255.252
+ duplex half
+!
+interface Ethernet1/1
+ ip address 10.0.5.14 255.255.255.252
+ duplex half
+!
+interface Ethernet1/2
+ no ip address
+ shutdown
+ duplex half
+!
+interface Ethernet1/3
+ no ip address
+ shutdown
+ duplex half
+!
+router ospf 1
+ network 3.0.0.0 0.255.255.255 area 0
+ network 10.0.5.8 0.0.0.3 area 0
+ network 10.0.5.12 0.0.0.3 area 0
+!
+ip forward-protocol nd
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+!
+mgcp profile default
+!
+!
+!
+gatekeeper
+ shutdown
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ login local
+ transport input ssh
+!
+!
+end
