@@ -1,6 +1,6 @@
 Building configuration...
 
-Current configuration : 1352 bytes
+Current configuration : 1392 bytes
 !
 ! Last configuration change at 14:47:23 UTC Sun Mar 2 2025
 upgrade fpd auto
@@ -60,6 +60,9 @@ interface Loopback55
  no ip address
 !
 interface Loopback990
+ no ip address
+!
+interface Loopback6996
  no ip address
 !
 interface FastEthernet0/0
