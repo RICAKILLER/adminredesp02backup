@@ -3,6 +3,7 @@ import re
 import datetime
 import hashlib
 import subprocess
+import time  # Importamos time para controlar el intervalo
 from netmiko import ConnectHandler
 
 # Configuración de los dispositivos
@@ -10,16 +11,12 @@ devices = [
     {'device_type': 'cisco_ios', 'host': ip, 'username': 'admin', 'password': 'admin'}
     for ip in ['10.0.5.5', '10.0.5.6', '10.0.5.10']
 ]
-<<<<<<< HEAD
-=======
 # Diccionario de nombres personalizados para cada router
 ROUTER_NAMES = {
     '10.0.5.5': 'Router1',
     '10.0.5.6': 'Router2',
     '10.0.5.10': 'Router3'
 }
-
->>>>>>> 7bd6080 (Primer commit - Configuración inicial de backups)
 
 # Carpeta base para almacenar los backups
 BACKUP_DIR = "backups"
@@ -40,19 +37,15 @@ def backup_config(device):
             output = conn.send_command('show running-config')
             
             # Crear carpeta por dispositivo
-<<<<<<< HEAD
-            device_dir = os.path.join(BACKUP_DIR, device['host'])
-=======
             # Crear carpeta por dispositivo con el nombre personalizado
             device_name = ROUTER_NAMES.get(device['host'], device['host'])  # Usa el nombre si existe, sino, la IP
             device_dir = os.path.join(BACKUP_DIR, device_name)
->>>>>>> 7bd6080 (Primer commit - Configuración inicial de backups)
             os.makedirs(device_dir, exist_ok=True)
             
             # Definir el nombre del archivo
             timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
             new_backup_file = os.path.join(device_dir, f"backup_{timestamp}.txt")
-            latest_backup_file = os.path.join(device_dir, "latest_backup.txt")
+            latest_backup_file = os.path.join(device_dir, f"latest_backup.txt")
             
             # Guardar nuevo backup
             with open(new_backup_file, 'w') as f:
@@ -78,10 +71,6 @@ def upload_to_github():
         subprocess.run(["git", "add", "backups/"], check=True)
         subprocess.run(["git", "commit", "-m", f"Backup actualizado {timestamp}"], check=True)
         subprocess.run(["git", "branch", "-M", "main"], check=True)
-<<<<<<< HEAD
-        subprocess.run(["git", "remote", "add", "origin", "https://github.com/RICAKILLER/adminredesp02backup.git"], check=True)
-=======
->>>>>>> 7bd6080 (Primer commit - Configuración inicial de backups)
         subprocess.run(["git", "push", "-u", "origin", "main"], check=True)
         print("Backups subidos a GitHub correctamente.")
     except subprocess.CalledProcessError as e:
@@ -89,11 +78,16 @@ def upload_to_github():
 
 # Función principal
 def main():
-    updated_files = [backup_config(device) for device in devices]
-    if any(updated_files):
-        upload_to_github()
-    else:
-        print("No hubo cambios en ningún router. No se subieron archivos a GitHub.")
+    while True:  # Bucle infinito para realizar respaldos cada 5 segundos
+        print("Iniciando respaldo de configuración...")
+        updated_files = [backup_config(device) for device in devices]
+        if any(updated_files):
+            upload_to_github()
+        else:
+            print("No hubo cambios en ningún router. No se subieron archivos a GitHub.")
+        
+        # Esperar 5 segundos antes de realizar el próximo respaldo
+        time.sleep(5)
 
 if __name__ == "__main__":
     main()
