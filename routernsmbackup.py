@@ -10,6 +10,16 @@ devices = [
     {'device_type': 'cisco_ios', 'host': ip, 'username': 'admin', 'password': 'admin'}
     for ip in ['10.0.5.5', '10.0.5.6', '10.0.5.10']
 ]
+<<<<<<< HEAD
+=======
+# Diccionario de nombres personalizados para cada router
+ROUTER_NAMES = {
+    '10.0.5.5': 'Router1',
+    '10.0.5.6': 'Router2',
+    '10.0.5.10': 'Router3'
+}
+
+>>>>>>> 7bd6080 (Primer commit - Configuración inicial de backups)
 
 # Carpeta base para almacenar los backups
 BACKUP_DIR = "backups"
@@ -30,7 +40,13 @@ def backup_config(device):
             output = conn.send_command('show running-config')
             
             # Crear carpeta por dispositivo
+<<<<<<< HEAD
             device_dir = os.path.join(BACKUP_DIR, device['host'])
+=======
+            # Crear carpeta por dispositivo con el nombre personalizado
+            device_name = ROUTER_NAMES.get(device['host'], device['host'])  # Usa el nombre si existe, sino, la IP
+            device_dir = os.path.join(BACKUP_DIR, device_name)
+>>>>>>> 7bd6080 (Primer commit - Configuración inicial de backups)
             os.makedirs(device_dir, exist_ok=True)
             
             # Definir el nombre del archivo
@@ -62,7 +78,10 @@ def upload_to_github():
         subprocess.run(["git", "add", "backups/"], check=True)
         subprocess.run(["git", "commit", "-m", f"Backup actualizado {timestamp}"], check=True)
         subprocess.run(["git", "branch", "-M", "main"], check=True)
+<<<<<<< HEAD
         subprocess.run(["git", "remote", "add", "origin", "https://github.com/RICAKILLER/adminredesp02backup.git"], check=True)
+=======
+>>>>>>> 7bd6080 (Primer commit - Configuración inicial de backups)
         subprocess.run(["git", "push", "-u", "origin", "main"], check=True)
         print("Backups subidos a GitHub correctamente.")
     except subprocess.CalledProcessError as e:
