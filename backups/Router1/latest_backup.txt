@@ -1,6 +1,6 @@
 Building configuration...
 
-Current configuration : 1338 bytes
+Current configuration : 1380 bytes
 !
 ! Last configuration change at 06:40:08 UTC Tue Mar 4 2025
 upgrade fpd auto
@@ -54,6 +54,9 @@ ip ssh version 2
 !
 interface Loopback0
  ip address 1.0.0.1 255.0.0.0
+!
+interface Loopback100001
+ no ip address
 !
 interface FastEthernet0/0
  no ip address
