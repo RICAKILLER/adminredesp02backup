@@ -1,8 +1,8 @@
 Building configuration...
 
-Current configuration : 1488 bytes
+Current configuration : 1347 bytes
 !
-! Last configuration change at 14:55:34 UTC Sun Mar 2 2025
+! Last configuration change at 06:30:34 UTC Tue Mar 4 2025 by admin
 upgrade fpd auto
 version 15.2
 service timestamps debug datetime msec
@@ -23,7 +23,6 @@ no aaa new-model
 !
 !
 !
-ip domain name router1.com
 ip cef
 no ipv6 cef
 !
@@ -37,7 +36,7 @@ multilink bundle-name authenticated
 !
 !
 !
-username admin privilege 15 secret 5 $1$Frco$Sqd4EuOFX08wyNPAfO02a/
+username admin privilege 15 secret 5 $1$iOvd$iW.aBJ92BUB7/hS13NISk.
 !
 redundancy
 !
@@ -56,19 +55,6 @@ ip ssh version 2
 interface Loopback0
  ip address 1.0.0.1 255.0.0.0
 !
-interface Loopback112
- no ip address
-!
-interface Loopback999
- no ip address
-!
-interface Loopback1000
- no ip address
-!
-interface Loopback6969
- no ip address
- shutdown
-!
 interface FastEthernet0/0
  no ip address
  shutdown
@@ -83,8 +69,7 @@ interface Ethernet1/1
  duplex half
 !
 interface Ethernet1/2
- no ip address
- shutdown
+ ip address 10.0.5.2 255.255.255.252
  duplex half
 !
 interface Ethernet1/3
@@ -94,6 +79,7 @@ interface Ethernet1/3
 router ospf 1
  no auto-cost
  network 1.0.0.0 0.255.255.255 area 0
+ network 10.0.5.0 0.0.0.3 area 0
  network 10.0.5.4 0.0.0.3 area 0
  network 10.0.5.12 0.0.0.3 area 0
  network 192.168.100.0 0.0.0.255 area 0
